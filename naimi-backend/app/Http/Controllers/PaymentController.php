@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    // 🟢 Merr të gjitha pagesat për një firmë
     public function index($firmId)
     {
         $payments = Payment::where('firm_id', $firmId)
@@ -17,7 +16,6 @@ class PaymentController extends Controller
         return response()->json($payments);
     }
 
-    // 🟢 Shto pagesë të re për një firmë
     public function store(Request $request, $firmId)
     {
         $request->validate([
@@ -37,5 +35,35 @@ class PaymentController extends Controller
             'message' => 'Payment added successfully',
             'payment' => $payment
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $payment = Payment::findOrFail($id);
+
+        $request->validate([
+            'date' => 'required|date',
+            'amount' => 'required|numeric|min:0',
+            'method' => 'nullable|string|max:50',
+        ]);
+
+        $payment->update([
+            'date' => $request->date,
+            'amount' => $request->amount,
+            'method' => $request->method,
+        ]);
+
+        return response()->json([
+            'message' => 'Payment updated successfully',
+            'payment' => $payment,
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $payment = Payment::findOrFail($id);
+        $payment->delete();
+
+        return response()->json(['message' => 'Payment deleted successfully']);
     }
 }

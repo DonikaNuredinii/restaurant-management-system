@@ -37,4 +37,11 @@ Route::post('/firms/{id}/payments', [PaymentController::class, 'store']);
 
 Route::get('/monthly-report', [FirmController::class, 'monthlyReport']);
 Route::get('/monthly-report/pdf', [FirmController::class, 'downloadMonthlyReport']);
+// 📦 Update & Delete për Orders dhe Payments
+Route::put('/orders/{id}', [OrderController::class, 'update']);
+Route::delete('/orders/{id}', [OrderController::class, 'destroy']);
+
+Route::put('/payments/{id}', [PaymentController::class, 'update']);
+Route::delete('/payments/{id}', [PaymentController::class, 'destroy']);
+
 
